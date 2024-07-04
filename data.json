@@ -1,0 +1,38 @@
+[
+    {
+        "ID": 1,
+        "Name": "John Doe",
+        "Gender": "Male",
+        "Class": "10A",
+        "Marks": 85,
+        "Passing": "Passed",
+        "Email": "johndoe@example.com"
+    },
+    {
+        "ID": 2,
+        "Name": "Jane Smith",
+        "Gender": "Female",
+        "Class": "10B",
+        "Marks": 92,
+        "Passing": "Passed",
+        "Email": "janesmith@example.com"
+    },
+    {
+        "ID": 3,
+        "Name": "Sam Brown",
+        "Gender": "Male",
+        "Class": "11A",
+        "Marks": 78,
+        "Passing": "Passed",
+        "Email": "sambrown@example.com"
+    },
+    {
+        "ID": 4,
+        "Name": "Lisa Ray",
+        "Gender": "Female",
+        "Class": "11B",
+        "Marks": 88,
+        "Passing": "Failed",
+        "Email": "lisaray@example.com"
+    }
+]

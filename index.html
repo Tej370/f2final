@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="main">
+        <div class="nav">
+            <span>Student Portal</span>
+        </div>
+
+        <div aria-colcount="search" class="search">
+            <input type="text" name="" id="searchBar" placeholder="Seaech">
+            <button class="search_btn" id="searchBtn">Search</button>
+        </div>
+
+        <div class="sort">
+            <button id="sortAZ" class="sort_btn">Sort A - Z</button>
+            <button id="sortZA" class="sort_btn">Sort Z - A</button>
+            <button id="sortMarks" class="sort_btn">Sort By Marks</button>
+            <button id="sortPassing" class="sort_btn">Sort By Passing</button>
+            <button id="sortClass" class="sort_btn">Sort By Class</button>
+            <button id="sortGender" class="sort_btn">Sort By Gender</button>
+        </div>
+
+        <div class="table_main">
+            <div class="table_data">
+                <table id="studentTable" border="1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Class</th>
+                            <th>Marks</th>
+                            <th>Passing</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('data.json')
+                .then(response => response.json())
+                .then(data => {
+                    populateTable(data);
+                });
+
+            document.getElementById('sortAZ').addEventListener('click', function () {
+                sortTable(1, 'asc');
+            });
+
+            document.getElementById('sortZA').addEventListener('click', function () {
+                sortTable(1, 'desc');
+            });
+
+            document.getElementById('sortMarks').addEventListener('click', function () {
+                sortTable(4, 'desc', true);
+            });
+
+            document.getElementById('sortPassing').addEventListener('click', function () {
+                sortTable(5, 'asc');
+            });
+
+            document.getElementById('sortClass').addEventListener('click', function () {
+                sortTable(3, 'asc');
+            });
+
+            document.getElementById('sortGender').addEventListener('click', function () {
+                sortTable(2, 'asc');
+            });
+
+            document.getElementById('searchBtn').addEventListener('click', function () {
+                searchTable();
+            });
+
+            document.getElementById('searchBar').addEventListener('keyup', function (event) {
+                if (event.key === 'Enter') {
+                    searchTable();
+                }
+            });
+        });
+
+        function populateTable(data) {
+            var table = document.getElementById('studentTable').getElementsByTagName('tbody')[0];
+            data.forEach(student => {
+                var row = table.insertRow();
+                row.insertCell(0).innerText = student.ID;
+                row.insertCell(1).innerText = student.Name;
+                row.insertCell(2).innerText = student.Gender;
+                row.insertCell(3).innerText = student.Class;
+                row.insertCell(4).innerText = student.Marks;
+                row.insertCell(5).innerText = student.Passing;
+                row.insertCell(6).innerText = student.Email;
+            });
+        }
+
+        function sortTable(columnIndex, order, isNumeric = false) {
+            var table = document.getElementById('studentTable');
+            var rows = Array.from(table.rows).slice(1);
+            rows.sort(function (a, b) {
+                var cellA = a.cells[columnIndex].innerText;
+                var cellB = b.cells[columnIndex].innerText;
+
+                if (isNumeric) {
+                    cellA = parseFloat(cellA);
+                    cellB = parseFloat(cellB);
+                }
+
+                if (order === 'asc') {
+                    return cellA > cellB ? 1 : -1;
+                } else {
+                    return cellA < cellB ? 1 : -1;
+                }
+            });
+
+            rows.forEach(function (row) {
+                table.appendChild(row);
+            });
+        }
+
+        function searchTable() {
+            var input = document.getElementById('searchBar').value.toLowerCase();
+            var table = document.getElementById('studentTable');
+            var rows = table.getElementsByTagName('tr');
+
+            for (var i = 1; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName('td');
+                var rowContainsSearchTerm = false;
+
+                for (var j = 0; j < cells.length; j++) {
+                    if (cells[j].innerText.toLowerCase().includes(input)) {
+                        rowContainsSearchTerm = true;
+                        break;
+                    }
+                }
+
+                if (rowContainsSearchTerm) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
